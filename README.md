@@ -373,35 +373,17 @@ React 결과 화면
 
 ## 브랜치 전략
 
-팀원이 늘어나면서 다 같이 `main`에 바로 push하면 충돌 위험이 커서,
-간단한 규칙을 정했습니다.
+평소엔 `main`에 바로 커밋해도 괜찮습니다. 다만 같은 파일(README,
+`App.jsx` 등)을 두 명 이상이 동시에 건드릴 것 같으면, 그때만 브랜치를
+나눠서 충돌을 피합니다.
 
-- `main`은 항상 실행 가능한 상태로 유지합니다. 여기에 직접 push하지
-  않습니다.
-- 작업할 때는 본인 영역 기준으로 브랜치를 새로 만듭니다.
+```bash
+git switch -c feat/ai-model
+git push -u origin feat/ai-model
+```
 
-  ```bash
-  git switch -c feat/ai-model
-  git switch -c feat/backend-detect
-  git switch -c fix/upload-error
-  ```
-
-  접두사는 `feat/`(기능 추가), `fix/`(버그 수정), `docs/`(문서만 수정)
-  중에서 상황에 맞게 씁니다.
-
-- 작업이 끝나면 GitHub에서 `main`으로 Pull Request를 올립니다.
-
-  ```bash
-  git push -u origin feat/ai-model
-  ```
-
-- 다른 팀원 코드와 겹치는 부분이 있으면 PR에서 서로 확인한 뒤
-  merge합니다. 급하지 않으면 최소 1명은 리뷰하고 merge하는 걸
-  권장합니다.
-
-GitHub 저장소 Settings → Branches에서 `main`에 "Require a pull
-request before merging" 규칙을 켜두면, 실수로 누가 바로 push하는 것도
-막을 수 있습니다.
+브랜치를 팠으면 작업 끝나고 GitHub에서 `main`으로 Pull Request를
+올려서 merge합니다.
 
 ## 팀 정보
 
