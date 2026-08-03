@@ -90,7 +90,8 @@ fst-kb-ai/
 ├── infra/
 │   └── README.md                    # AWS 배포 구현 예정 영역
 ├── docs/
-│   └── architecture.md              # 현재와 향후 데이터 흐름
+│   ├── architecture.md              # 현재와 향후 데이터 흐름
+│   └── api-spec.md                  # API 명세서 (요청/응답 필드, 에러코드)
 ├── package.json                     # 루트 npm workspace 명령
 ├── package-lock.json                # npm install 후 생성
 ├── .gitignore
@@ -328,7 +329,7 @@ FastAPI POST /detect (스텁)
 React 결과 화면
 ```
 
-## 향후 데이터 흐름 (AI 연결 후)
+## 향후 데이터 흐름 (AI 연결 후) --> 연결은 완료.
 
 ```text
 사용자
@@ -348,9 +349,6 @@ React 결과 화면
 분석 결과를 화면에 표시합니다.
 
 
-
-현재 작업에서는 로컬 구현과 검증까지만 수행하며, 사용자 승인 전에는
-커밋하거나 push하지 않습니다.
 
 ## 현재 제한 사항
 

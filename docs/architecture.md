@@ -50,3 +50,6 @@ file: <JPG/JPEG/PNG>
 AI 모델이 붙으면 `resultImageUrl`에 실제 탐지 결과 이미지 주소가
 채워질 예정입니다. 프론트엔드는 `resultImageUrl`이 없을 때 업로드한
 원본 사진을 결과 예시로 표시합니다.
+
+필드별 타입, 에러 응답, 요청 예시 등 자세한 내용은
+[`docs/api-spec.md`](api-spec.md)를 참고합니다.
