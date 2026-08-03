@@ -371,20 +371,6 @@ React 결과 화면
 7. AWS 개발 환경 배포
 8. 실제 데이터 기반 통합 테스트
 
-## 브랜치 전략
-
-평소엔 `main`에 바로 커밋해도 괜찮습니다. 다만 같은 파일(README,
-`App.jsx` 등)을 두 명 이상이 동시에 건드릴 것 같으면, 그때만 브랜치를
-나눠서 충돌을 피합니다.
-
-```bash
-git switch -c feat/ai-model
-git push -u origin feat/ai-model
-```
-
-브랜치를 팠으면 작업 끝나고 GitHub에서 `main`으로 Pull Request를
-올려서 merge합니다.
-
 ## 팀 정보
 
 **First Penguin**
