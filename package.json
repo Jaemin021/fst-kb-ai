@@ -1,0 +1,14 @@
+{
+  "name": "fst-kb-ai",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @first-penguin/frontend",
+    "build": "npm run build --workspace @first-penguin/frontend",
+    "lint": "npm run lint --workspace @first-penguin/frontend",
+    "preview": "npm run preview --workspace @first-penguin/frontend"
+  }
+}
