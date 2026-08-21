@@ -1,21 +1,21 @@
 const RESULT_CARDS = [
   {
     key: 'total',
-    label: '전체 탐지 인원',
-    suffix: '명',
+    label: '전체 탐지 객체',
+    suffix: '건',
     tone: 'blue',
   },
   {
-    key: 'helmet',
-    label: '헬멧 착용',
-    suffix: '명',
-    tone: 'green',
+    key: 'noHelmet',
+    label: '안전모 미착용',
+    suffix: '건',
+    tone: 'orange',
   },
   {
-    key: 'noHelmet',
-    label: '헬멧 미착용',
-    suffix: '명',
-    tone: 'orange',
+    key: 'multiRiding',
+    label: '다인 탑승',
+    suffix: '건',
+    tone: 'green',
   },
   {
     key: 'confidence',
@@ -37,7 +37,9 @@ function ResultSection({ result, fallbackImageUrl, fileName }) {
       <div className="section-heading section-heading--left">
         <p className="section-heading__eyebrow">ANALYSIS RESULT</p>
         <h2 id="result-title">AI 분석 결과</h2>
-        <p>현재는 화면 확인을 위한 임시 데이터가 표시됩니다.</p>
+        <p>
+          업로드한 이미지를 AI 모델이 분석한 결과입니다.
+        </p>
       </div>
 
       <div className="result-grid">
@@ -61,8 +63,24 @@ function ResultSection({ result, fallbackImageUrl, fileName }) {
             !
           </span>
           <div>
-            <strong>헬멧 미착용 이용자가 탐지되었습니다.</strong>
-            <p>안전한 킥보드 이용을 위해 헬멧 착용을 안내해주세요.</p>
+            <strong>안전모 미착용 객체가 탐지되었습니다.</strong>
+            <p>
+              전동 킥보드 이용 시 안전모 착용이 필요합니다.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {result.multiRiding > 0 && (
+        <div className="warning-message" role="alert">
+          <span className="warning-message__icon" aria-hidden="true">
+            !
+          </span>
+          <div>
+            <strong>다인 탑승 객체가 탐지되었습니다.</strong>
+            <p>
+              전동 킥보드의 안전한 단독 탑승이 필요합니다.
+            </p>
           </div>
         </div>
       )}
@@ -73,16 +91,22 @@ function ResultSection({ result, fallbackImageUrl, fileName }) {
             <p className="preview-card__label">결과 이미지</p>
             <h3>탐지 결과 미리보기</h3>
           </div>
-          <span className="result-image-card__badge">AI 분석 결과 예시</span>
+          <span className="result-image-card__badge">
+            YOLO AI 분석
+          </span>
         </div>
 
         <div className="result-image-card__image-wrap">
-          <img src={resultImageUrl} alt={`AI 분석 결과 예시: ${fileName}`} />
-          <span>AI 분석 결과 예시</span>
+          <img
+            src={resultImageUrl}
+            alt={`AI 탐지 결과: ${fileName}`}
+          />
+          <span>AI 탐지 결과</span>
         </div>
+
         <p className="result-image-card__caption">
-          현재는 업로드한 원본 사진을 표시합니다. FastAPI 연결 후 탐지 결과
-          이미지 URL로 교체됩니다.
+          탐지된 객체의 위치와 AI 모델의 예측 클래스를
+          바운딩 박스로 표시합니다.
         </p>
       </article>
     </section>

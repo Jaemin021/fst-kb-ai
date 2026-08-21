@@ -121,8 +121,8 @@ function Home() {
           <p className="section-heading__eyebrow">PHOTO ANALYSIS</p>
           <h2 id="analysis-title">사진으로 안전 상태 확인하기</h2>
           <p>
-            분석할 사진 한 장을 선택해주세요. 현재 화면은 임시 분석
-            데이터로 동작합니다.
+            분석할 사진 한 장을 선택하면 AI 모델이 안전 위반 여부를
+            분석합니다.
           </p>
         </div>
 
