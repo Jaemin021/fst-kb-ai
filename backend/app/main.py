@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 from uuid import uuid4
@@ -39,12 +40,21 @@ app = FastAPI(
 )
 
 
+# 허용할 프론트엔드 주소.
+# 배포 환경에서는 ALLOWED_ORIGINS 환경변수로 덮어씁니다. (쉼표로 구분)
+#   예) ALLOWED_ORIGINS="http://localhost:5173,http://my-bucket.s3-website.ap-northeast-2.amazonaws.com"
+# 환경변수가 없으면 기존과 동일하게 로컬 개발 주소만 허용합니다.
+DEFAULT_ALLOWED_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
+
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("ALLOWED_ORIGINS", DEFAULT_ALLOWED_ORIGINS).split(",")
+    if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
 )
