@@ -243,3 +243,10 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+
+# AI inference result images
+backend/results/
+
+# AI model / private SSH key
+ai/weights/*.pt
+*.pem
