@@ -223,5 +223,4 @@ npm run build     # 배포용 빌드 (frontend/dist 생성, .env.production 사�
 
 **First Penguin**
 
-AI 기술을 활용해 더 안전한 킥보드 이용 문화를 만드는 학교 팀
-프로젝트입니다.
+AI 기술을 활용해 더 안전한 킥보드 이용 문화를 만드는 팀 프로젝트입니다.
