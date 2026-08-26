@@ -12,6 +12,32 @@ AI를 활용해 전동 킥보드 이용자의 안전 위반 여부를 분석하�
 > - 서비스 주소: <http://fst-kb-ai-frontend.s3-website.ap-northeast-2.amazonaws.com>
 > - API 문서(Swagger): <http://13.124.246.14/docs>
 
+## 서비스 화면
+
+### 1. 메인 화면
+
+분석할 사진을 업로드하고 헬멧 착용 여부 탐지를 시작하는 화면입니다.
+
+<p align="center">
+  <img src="docs/images/main-screen.png" alt="First Penguin 메인 화면" width="900">
+</p>
+
+### 2. 분석 화면
+
+탐지 인원, 헬멧 착용 여부, 다인 탑승 여부와 분석 결과를 확인할 수 있습니다.
+
+<p align="center">
+  <img src="docs/images/analysis-screen.png" alt="First Penguin 분석 결과 화면" width="900">
+</p>
+
+### 3. 서비스 설명
+
+서비스의 필요성, 이용 흐름과 공익적 활용 방향을 소개합니다.
+
+<p align="center">
+  <img src="docs/images/service-intro.png" alt="First Penguin 서비스 설명 화면" width="900">
+</p>
+
 ## 프로젝트 구성
 
 이 저장소는 프론트엔드, 백엔드, AI 모델, AWS 인프라를 하나의
