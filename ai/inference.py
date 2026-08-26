@@ -5,7 +5,6 @@ import os
 from pathlib import Path
 from typing import Any
 
-import numpy as np
 import torch
 from PIL import Image, ImageOps
 from ultralytics import YOLO
@@ -115,11 +114,14 @@ class KickboardDetector:
         image = Image.open(io.BytesIO(image_bytes))
         image = ImageOps.exif_transpose(image).convert("RGB")
 
-        image_np = np.asarray(image)
-
         # YOLO 추론
+        #
+        # PIL 이미지를 그대로 넘긴다. ultralytics는 PIL 입력은 RGB로,
+        # numpy 입력은 BGR(OpenCV 순서)로 간주하기 때문에
+        # np.asarray(image)로 바꿔서 넘기면 빨강/파랑이 뒤집힌 채로
+        # 추론되어 신뢰도가 떨어진다.
         results = self.model.predict(
-            source=image_np,
+            source=image,
             conf=self.conf,
             imgsz=self.imgsz,
             device=self.device,
