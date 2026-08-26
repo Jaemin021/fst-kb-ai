@@ -92,6 +92,8 @@ fst-kb-ai/
 │   └── requirements.txt
 ├── ai/                               # YOLO 추론 모듈
 │   ├── inference.py                 # 모델 로딩, 추론, 통계 계산
+│   ├── check_multi_riding.py        # 디버그: 낮은 threshold로 클래스별 예측 확인
+│   ├── check_color_order.py         # 디버그: 입력 채널 순서(RGB/BGR) 검증
 │   └── weights/                     # best.pt 가중치 위치 (git 제외)
 ├── infra/README.md                  # AWS 구성과 배포·운영 절차
 ├── docs/
@@ -175,6 +177,11 @@ npm run build     # 배포용 빌드 (frontend/dist 생성, .env.production 사�
 - 모델 정확도가 아직 낮은 편입니다. 악천후, 인물 겹침 등 어려운
   조건에서 미탐지가 발생해 학습 데이터 보강과 threshold 조정을
   진행할 예정입니다.
+- 다인 탑승(`multi_riding`) 클래스는 현재 가중치에서 사실상 탐지되지
+  않습니다 (2026-08-26 검증: 2인 탑승 사진을 confidence 0.001로
+  돌려도 예측 0건). 파이프라인은 연결되어 있으므로 학습 데이터 보강
+  후 가중치만 교체하면 됩니다. 확인 방법은
+  [`ai/README.md`](ai/README.md)의 디버그 스크립트 항목을 참고합니다.
 - HTTP로 서비스 중입니다. HTTPS는 도메인 구입이 선행되어야 해서
   이번 범위에서는 제외했습니다 (전환 가능한 구조는 준비되어 있습니다).
 - 결과 이미지가 서버 디스크에 계속 쌓입니다. 주기적 정리 정책은
@@ -189,7 +196,7 @@ npm run build     # 배포용 빌드 (frontend/dist 생성, .env.production 사�
 4. ~~AI 모델과 FastAPI 연결~~ (완료)
 5. ~~바운딩 박스 결과 이미지 표시~~ (완료)
 6. ~~AWS 배포 (S3 + EC2 + Nginx + systemd + 고정 IP)~~ (완료)
-7. 모델 정확도 개선 (진행 중)
+7. 모델 정확도 개선 — 특히 `multi_riding` 학습 데이터 보강 (진행 중)
 8. HTTPS 적용, 결과 이미지 정리 정책 (선택 과제)
 
 ## 팀 정보

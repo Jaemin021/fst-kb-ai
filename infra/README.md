@@ -16,7 +16,10 @@ AWS 배포 구성과 운영 방법을 정리합니다. (2026년 8월 배포 완�
 - Nginx에는 `proxy_set_header Host $host;`(결과 이미지 URL 생성에
   필수), `client_max_body_size 12M`, `proxy_read_timeout 120s`가
   설정되어 있습니다.
-- 보안 그룹은 22(SSH), 80(HTTP), 8000(직접 테스트용)을 개방했습니다.
+- 외부에서 접근 가능한 포트는 22(SSH)와 80(HTTP)입니다. uvicorn의
+  8000 포트는 Nginx 뒤에서만 쓰이며, 외부에서 직접 접근되지 않는 것을
+  확인했습니다(2026-08-26). 보안 그룹에 8000 인바운드 규칙이 남아
+  있다면 제거해도 됩니다.
 
 ## 프론트엔드 배포 절차
 
@@ -48,13 +51,22 @@ sudo systemctl status yolo-backend
 sudo systemctl restart yolo-backend
 sudo journalctl -u yolo-backend -f
 
-# 코드 업데이트 반영
-cd ~/fst-kb-ai && git pull
+# 코드 업데이트 반영 (main 브랜치 기준)
+cd ~/fst-kb-ai && git checkout main && git pull origin main
+sudo systemctl daemon-reload
 sudo systemctl restart yolo-backend
 
 # Nginx 설정 변경 시
 sudo nginx -t && sudo systemctl reload nginx
 ```
+
+`daemon-reload`는 서비스 파일을 수정하지 않았다면 생략해도 되지만,
+수정 여부가 기억나지 않을 때 같이 실행해도 해가 없습니다 (`systemctl
+status`에 "changed on disk" 경고가 보이면 반드시 필요합니다).
+
+파이썬 가상환경은 `~/fst-kb-ai/backend/venv`에 있습니다 (로컬 안내의
+`.venv`와 이름이 다릅니다). 디버그 스크립트를 직접 실행할 때는
+`source ~/fst-kb-ai/backend/venv/bin/activate` 후 사용합니다.
 
 systemd 서비스 파일에는 CORS 허용 주소가 환경변수로 등록되어
 있습니다.
