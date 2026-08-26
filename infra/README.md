@@ -1,6 +1,6 @@
 # Infrastructure
 
-AWS 배포 구성과 운영 방법을 정리합니다. (2026년 8월 배포 완료)
+AWS 배포 구성과 운영 방법을 정리합니다. 
 
 ## 배포 현황
 
@@ -91,14 +91,6 @@ ALLOWED_ORIGINS="http://localhost:5173,http://127.0.0.1:5173,http://fst-kb-ai-fr
 scp -i <키페어.pem> best.pt ubuntu@13.124.246.14:~/fst-kb-ai/ai/weights/
 ```
 
-## 비용과 정리
-
-- 비용은 EC2 상시 가동분이 대부분이고, S3는 사실상 무료 수준입니다.
-- 퍼블릭 IPv4 주소(Elastic IP 포함)는 시간당 소액이 과금되며,
-  특히 Elastic IP를 반납하지 않으면 인스턴스를 종료한 뒤에도 과금이
-  계속됩니다.
-- 프로젝트 종료 시 정리 순서: **Elastic IP 릴리스(반납) → EC2
-  인스턴스 종료 → S3 버킷 비우고 삭제**.
 
 ## 적용하지 않은 것과 이유
 
