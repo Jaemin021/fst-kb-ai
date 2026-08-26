@@ -18,6 +18,8 @@ from ultralytics import YOLO
 
 
 AI_DIR = Path(__file__).resolve().parent
+
+# 환경변수 오버라이드(YOLO_MODEL_PATH 등)는 반영하지 않는다.
 MODEL_PATH = AI_DIR / "weights" / "best.pt"
 
 # 사실상 모든 예측을 다 보기 위한 값

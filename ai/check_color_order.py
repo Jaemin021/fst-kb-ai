@@ -1,17 +1,19 @@
 """
-서비스(inference.py)와 똑같은 전처리로 돌렸을 때 결과가 달라지는지 확인하는
-디버그 스크립트.
+YOLO 입력의 채널 순서(RGB/BGR)에 따라 결과가 달라지는지 확인하는 디버그
+스크립트.
 
-inference.py는 PIL로 연 이미지를 np.asarray로 바꿔(RGB 순서) YOLO에 넘기는데,
-ultralytics는 numpy 배열을 BGR(OpenCV 순서)로 간주한다. 그러면 서비스는
-빨강/파랑이 뒤집힌 이미지로 추론하게 된다. 이 스크립트는 같은 사진을
+2026-08-26 이전의 inference.py는 PIL로 연 이미지를 np.asarray로 바꿔
+(RGB 순서) YOLO에 넘기고 있었는데, ultralytics는 numpy 배열을
+BGR(OpenCV 순서)로 간주한다. 그래서 서비스가 빨강/파랑이 뒤집힌 이미지로
+추론하고 있었고, 이 스크립트로 그 사실을 확인한 뒤 PIL 이미지를 그대로
+넘기도록 수정했다. 같은 사진을
 
     A) 파일 경로로 넘김           (ultralytics가 직접 읽음, 정상 기준)
-    B) 서비스와 똑같이 RGB numpy   (현재 배포 코드 방식)
-    C) PIL 이미지 그대로 넘김      (수정안: ultralytics가 알아서 BGR로 변환)
+    B) RGB numpy로 넘김            (수정 전 버그 경로 재현)
+    C) PIL 이미지 그대로 넘김      (현재 inference.py 방식)
 
 세 가지로 돌려서 threshold 0.25 이상 결과를 나란히 보여준다.
-B가 A/C와 다르고 서비스 화면에서 본 결과와 같으면, 채널 순서 버그가 확정이다.
+가중치를 교체한 뒤 A/C가 서로 같고 B만 낮게 나오면 정상이다.
 
 사용법 (EC2에서):
     python ai/check_color_order.py ~/test.jpg
@@ -30,7 +32,7 @@ from ultralytics import YOLO
 AI_DIR = Path(__file__).resolve().parent
 MODEL_PATH = AI_DIR / "weights" / "best.pt"
 
-# 서비스와 동일한 설정 (inference.py 기본값)
+# inference.py 기본값과 동일 (환경변수 오버라이드는 반영하지 않음)
 CONF = 0.25
 IMAGE_SIZE = 960
 
@@ -64,8 +66,8 @@ def main(image_path: str) -> None:
 
     cases = [
         ("A) 파일 경로 (정상 기준)", image_path),
-        ("B) RGB numpy (현재 서비스 방식)", image_np_rgb),
-        ("C) PIL 이미지 그대로 (수정안)", image),
+        ("B) RGB numpy (수정 전 버그 경로)", image_np_rgb),
+        ("C) PIL 이미지 그대로 (현재 방식)", image),
     ]
 
     print("=" * 60)
@@ -85,7 +87,8 @@ def main(image_path: str) -> None:
         summarize(model, result)
 
     print()
-    print("판독: B가 A/C와 다르고 서비스 화면 결과와 같으면 채널 순서 버그 확정.")
+    print("판독: A와 C가 같고 B만 낮으면 정상 (B는 수정 전 버그 경로 재현).")
+    print("      서비스 화면 결과가 B와 같다면 수정 코드가 아직 배포되지 않은 것.")
 
 
 if __name__ == "__main__":

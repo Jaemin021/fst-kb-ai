@@ -8,7 +8,7 @@
 | 파일 | 역할 |
 |---|---|
 | `inference.py` | 모델 로딩(서버 시작 시 1회), 추론, 통계 계산, 결과 이미지 생성 |
-| `check_multi_riding.py` | 디버그: 사진 1장 이상을 confidence 0.001로 돌려 클래스별 예측을 전부 출력 |
+| `check_multi_riding.py` | 디버그: 사진 1장 이상을 confidence 0.001로 돌려 예측을 conf 높은 순 상위 20개까지 출력 (`multi_riding` 유무는 전체 예측 기준 판정) |
 | `check_color_order.py` | 디버그: 같은 사진을 파일 경로 / RGB numpy / PIL 세 방식으로 넣어 결과 비교 |
 | `weights/best.pt` | 학습된 YOLO 가중치 (git 미포함) |
 
@@ -30,7 +30,10 @@
 2. PIL 이미지를 **그대로** YOLO에 넘겨 추론합니다. ultralytics는 PIL
    입력을 RGB로, numpy 입력을 BGR로 해석하므로 `np.asarray()`로 바꿔
    넘기면 빨강/파랑이 뒤집힌 채 추론되어 신뢰도가 떨어집니다
-   (2026-08-26 수정: 같은 사진에서 신뢰도 26% → 40%).
+   (2026-08-26 수정: 테스트 사진 1장에서 신뢰도 26% → 40%).
+   **이 수정은 `main`에 반영되어 있으나 2026-08-26 기준 EC2에는 아직
+   배포되지 않았습니다.** 반영 절차는
+   [`infra/README.md`](../infra/README.md)를 참고합니다.
 3. 클래스별 탐지 수와 평균 confidence(%)를 계산합니다.
 4. 바운딩 박스를 그린 JPEG 이미지를 함께 반환합니다.
 
@@ -46,9 +49,15 @@ python ai/check_multi_riding.py ~/사진.jpg [사진2.jpg ...]
 python ai/check_color_order.py ~/사진.jpg
 ```
 
+두 스크립트는 `ai/weights/best.pt`와 conf·imgsz를 하드코딩하므로
+`YOLO_MODEL_PATH` 등 환경변수 오버라이드는 반영되지 않습니다.
+서비스가 환경변수로 다른 가중치를 쓰고 있다면 스크립트를 함께
+수정해야 같은 모델을 검사합니다.
+
 2026-08-26 검증 결과: 배포 가중치는 `multi_riding` 클래스를 갖고
-있지만, 2인 탑승 사진에서 해당 클래스 예측이 confidence 0.001에서도
-0건이었습니다. threshold 조정으로 해결되지 않으며 학습 데이터 보강이
+있지만, 테스트한 2인 탑승 사진 1장에서 해당 클래스 예측이 confidence
+0.001에서도 0건이었습니다. 최소한 이 조건에서는 threshold 조정으로
+해결되지 않으며, 원인 확정에는 학습 데이터와 confusion matrix 확인이
 필요합니다.
 
 ## 가중치 교체 (모델 재학습 시)

@@ -14,7 +14,7 @@ YOLO 추론을 호출하고, 탐지 통계와 바운딩 박스 결과 이미지�
 
 상세 명세는 [`docs/api-spec.md`](../docs/api-spec.md)를 참고합니다.
 
-## 실행 방법
+## 로컬 실행 방법
 
 모델 가중치 `ai/weights/best.pt`가 먼저 있어야 합니다 (git 미포함,
 팀 공유 채널에서 전달). 파일이 없으면 서버가 시작 시점에
@@ -30,6 +30,11 @@ uvicorn app.main:app --reload --port 8000
 
 `http://localhost:8000/health`에서 `{"status":"ok","ai":"ready"}`가
 보이면 정상입니다.
+
+배포 서버(EC2)의 가상환경은 이름이 `.venv`가 아니라
+`backend/venv`이고, 직접 실행하지 않고 systemd(`yolo-backend`)가
+구동합니다. 운영 절차는 [`infra/README.md`](../infra/README.md)를
+참고합니다.
 
 ## 환경변수
 
