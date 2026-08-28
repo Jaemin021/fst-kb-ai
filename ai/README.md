@@ -728,13 +728,3 @@ Multi-riding Classification
 세부 설정 및 Backend 실행 방법은
 [`backend/README.md`](../backend/README.md)를 참고합니다.
 
-```
-
-이대로 **GitHub의 `ai/README.md` 편집 창에서 `Ctrl+A → 붙여넣기 → 변경 사항 커밋`** 하면 돼.
-
-한 가지는 의도적으로 이렇게 적었어:
-
-> **모델 성능 참고 = Baseline 성능이며, 현재 `best.pt`가 다른 실험 가중치라면 동일 성능으로 해석하지 말 것**
-
-이 문구는 꼭 유지하는 게 좋아. 지금 배포 과정에서 가중치가 교체될 수 있기 때문에, README에 `mAP50 0.822`를 적어놓고 현재 서비스 모델도 정확히 그 수치라고 오해하는 걸 방지해줘. 
-```
